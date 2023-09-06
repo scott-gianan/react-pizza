@@ -7,11 +7,11 @@ function AppLayout() {
   const isLoading = navigation.state === "loading";
   return (
     <div className="layout">
-      {isLoading && <Loader />}
+      {/* {isLoading && <Loader />} */}
       <Header />
       <main>
         <h1>Content</h1>
-        <Outlet />
+        {isLoading ? <Loader /> : <Outlet />}
       </main>
       <CartOverview />
     </div>
