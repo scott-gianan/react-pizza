@@ -36,6 +36,7 @@ function CreateOrder() {
   const cart = fakeCart;
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
+  const formErrors = useActionData();
   return (
     <div>
       <h2>Ready to order? Let's go!</h2>
@@ -48,6 +49,7 @@ function CreateOrder() {
 
         <div>
           <label>Phone number</label>
+          {formErrors?.phone && <span> - {formErrors.phone}</span>}
           <div>
             <input type="tel" name="phone" required />
           </div>
@@ -89,8 +91,16 @@ export async function action({ request }) {
     cart: JSON.parse(data.cart),
     priority: data.priority === "on",
   };
+  const errors = {};
+  if (!isValidPhone(order.phone)) {
+    errors.phone = "Invalid Phone Number.";
+  }
+  if (Object.keys(errors).length) {
+    return errors;
+  }
+  //If everything is okay, create new order and redirect
   const newOrder = await createOrder(order);
-  console.log(order);
+
   return redirect(`/order/${newOrder.id}`);
 }
 export default CreateOrder;
