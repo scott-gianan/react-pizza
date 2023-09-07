@@ -50,7 +50,7 @@ function Order() {
     </div>
   );
 }
-export async function orderLoader({ params }) {
+export async function loader({ params }) {
   //update it to params.orderId
   const order = await getOrder(params.orderId);
   return order;
